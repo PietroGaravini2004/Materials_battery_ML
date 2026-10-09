@@ -1,5 +1,5 @@
 {
-  "query_date": "2026-10-09T15:42:17.480451",
+  "query_date": "2026-10-09T16:09:42.473638",
   "database": "Materials Project",
   "query": "elements contains Li AND O (all phases \u2014 not restricted to binary Li-O)",
   "fields": [

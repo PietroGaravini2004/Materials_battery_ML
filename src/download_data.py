@@ -61,3 +61,20 @@ with open(data_dir / "mp_Li_O_containing_metadata.json", "w") as f:
 
 print(f'Full dataset saved: {df.shape[0]} rows × {df.shape[1]} columns')
 print(f'Missing values:\n{df.isnull().sum()}')
+
+# Dataset reduction --> we consider the material wit E_hull < 0.1 eV/atom
+EHULL_CUTOFF = 0.05  # eV/atom — practical synthesisability threshold
+
+df_subset = (df
+    .dropna(subset=['Ef', 'Ehull'])
+    .query('Ehull <= @EHULL_CUTOFF')
+    .copy()
+    .reset_index(drop=True)
+)
+df_subset.to_csv('data/mp_Li_O_stable_subset.csv', index=False)
+
+print(f'Full dataset :  {len(df):5d} entries')
+print(f'Stable subset:  {len(df_subset):5d} entries  (Ehull ≤ {EHULL_CUTOFF} eV/atom, non-missing Ef)')
+print(f'\nSubset crystal systems:')
+print(df_subset['crystal_system'].value_counts().to_string())
+
