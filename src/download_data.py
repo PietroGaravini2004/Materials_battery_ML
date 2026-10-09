@@ -2,6 +2,8 @@ from config import MP_API_KEY
 from mp_api.client import MPRester # connection with Dataset
 from datetime import datetime
 import pandas as pd # to treat the dataset
+from pathlib import Path
+import json
 
 # FIX: use mpr.materials.summary.search (mpr.summary.search is deprecated as of mp-api 0.39+)
 # list with materials features we are interested in
@@ -44,5 +46,18 @@ for d in docs:
 # converting the list records into a pandas DataFrame
 df = pd.DataFrame(records)
 
+#define the link with github
+BASE_DIR = Path(__file__).resolve().parent.parent
 
+#setting the destination of the file
+data_dir = BASE_DIR / "data" / "raw"
 
+#creating and saving the dataset.csv file
+df.to_csv(data_dir / "mp_Li_O_containing.csv", index=False)
+
+#creating and saving the metadata presentation file
+with open(data_dir / "mp_Li_O_containing_metadata.json", "w") as f:
+    json.dump(query_metadata, f, indent=2)
+
+print(f'Full dataset saved: {df.shape[0]} rows × {df.shape[1]} columns')
+print(f'Missing values:\n{df.isnull().sum()}')
