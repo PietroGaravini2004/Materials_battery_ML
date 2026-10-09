@@ -1,0 +1,17 @@
+# API keys
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Datasets
+data/raw/
+
+# VS Code
+.vscode/
