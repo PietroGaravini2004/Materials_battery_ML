@@ -10,8 +10,5 @@ __pycache__/
 # Jupyter
 .ipynb_checkpoints/
 
-# Datasets
-data/raw/
-
 # VS Code
 .vscode/

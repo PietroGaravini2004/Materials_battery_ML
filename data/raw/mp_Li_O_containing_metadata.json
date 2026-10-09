@@ -1,0 +1,18 @@
+{
+  "query_date": "2026-10-09T15:42:17.480451",
+  "database": "Materials Project",
+  "query": "elements contains Li AND O (all phases \u2014 not restricted to binary Li-O)",
+  "fields": [
+    "material_id",
+    "formula_pretty",
+    "nsites",
+    "volume",
+    "symmetry",
+    "formation_energy_per_atom",
+    "energy_above_hull",
+    "band_gap",
+    "is_stable",
+    "is_metal"
+  ],
+  "note": "Includes ternary/quaternary Li-O-X phases (oxides, phosphates, sulfates, \u2026)"
+}
