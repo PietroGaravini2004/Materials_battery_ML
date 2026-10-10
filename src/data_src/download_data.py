@@ -24,9 +24,8 @@ with MPRester(MP_API_KEY) as mpr:
     docs = mpr.materials.summary.search(
     elements=['Li', 'O'],
     fields=fields)
-print(f'Retrieved: {len(docs)} entries')
 
-# create the list records. records[n] it's a dictionary that correspond to a material, with his property. We now fill the list rocords with all available materials.
+# create the list records. records[n] it's a dictionary that correspond to a material, with his property. We now fill the list records with all available materials.
 records = []
 for d in docs:
     cs = d.symmetry.crystal_system.value if d.symmetry else 'unknown'
@@ -43,11 +42,11 @@ for d in docs:
         'is_metal':  d.is_metal,
     })
 
-# converting the list records into a pandas DataFrame
+# converting the list records into a pandas DataFrame --> pandas very usefull for dataset
 df = pd.DataFrame(records)
 
 #define the link with github
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parents[2]
 
 #setting the destination of the file
 data_dir = BASE_DIR / "data" / "raw"
@@ -58,23 +57,3 @@ df.to_csv(data_dir / "mp_Li_O_containing.csv", index=False)
 #creating and saving the metadata presentation file
 with open(data_dir / "mp_Li_O_containing_metadata.json", "w") as f:
     json.dump(query_metadata, f, indent=2)
-
-print(f'Full dataset saved: {df.shape[0]} rows × {df.shape[1]} columns')
-print(f'Missing values:\n{df.isnull().sum()}')
-
-# Dataset reduction --> we consider the material wit E_hull < 0.1 eV/atom
-EHULL_CUTOFF = 0.05  # eV/atom — practical synthesisability threshold
-
-df_subset = (df
-    .dropna(subset=['Ef', 'Ehull'])
-    .query('Ehull <= @EHULL_CUTOFF')
-    .copy()
-    .reset_index(drop=True)
-)
-df_subset.to_csv('data/mp_Li_O_stable_subset.csv', index=False)
-
-print(f'Full dataset :  {len(df):5d} entries')
-print(f'Stable subset:  {len(df_subset):5d} entries  (Ehull ≤ {EHULL_CUTOFF} eV/atom, non-missing Ef)')
-print(f'\nSubset crystal systems:')
-print(df_subset['crystal_system'].value_counts().to_string())
-
