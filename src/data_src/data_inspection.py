@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 from config import RAW_DATA_DIR
+from config import PROCESSED_DATA_DIR
 from scipy import stats
 
 
@@ -52,3 +53,20 @@ for col in ['Ef','Ehull','Eg','volume_per_site']:
     df[f'{col}_outlier'] = False
     df.loc[d.index[z > 3], f'{col}_outlier'] = True
 print('\nOutliers FLAGGED (not removed) — they may be genuine extreme cases.')
+
+# Creating the clean DataSet and plancing it in Processed Data
+# Remove duplicates, keeping one material per group
+df_clean = df.drop_duplicates(
+    subset=columns_to_check,
+    keep='first'
+).copy()
+
+# Save cleaned dataset
+df_clean.to_csv(
+    PROCESSED_DATA_DIR / "mp_Li_O_clean.csv",
+    index=False
+)
+
+print(f"\nOriginal dataset: {len(df)} materials")
+print(f"Cleaned dataset: {len(df_clean)} materials")
+print(f"Duplicates removed: {len(df) - len(df_clean)}")

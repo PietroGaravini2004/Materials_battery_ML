@@ -7,9 +7,11 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 
 # Data directories
 RAW_DATA_DIR = BASE_DIR / "data" / "raw"
+PROCESSED_DATA_DIR = BASE_DIR / "data" / "processed"
 
 # Create directory if it does not exist
 RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
+PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 # Load Materials Project API key from .env
 load_dotenv(BASE_DIR / ".env")
