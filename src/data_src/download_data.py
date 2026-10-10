@@ -19,7 +19,7 @@ query_metadata = {
     'note': 'Includes ternary/quaternary Li-O-X phases (oxides, phosphates, sulfates, …)',
 }
 
-# creates docs variable (list of objects = material), that contains the properties defined in fields of the materials with Li and O, 
+# QUERY --> creates docs variable (list of objects = material), that contains the properties defined in fields of the materials with Li and O, 
 with MPRester(MP_API_KEY) as mpr:
     docs = mpr.materials.summary.search(
     elements=['Li', 'O'],
